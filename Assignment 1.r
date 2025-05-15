@@ -51,44 +51,32 @@ best_model_index <- which.min(AIC_values)
 cat("The best model according to AIC is AR(", best_model_index, ")\n", sep = "")
 
 #Part III
-#Perform Ljung-Box and Jarque-Bera tests on the residuals of the mod-els.  
-# What are the results? 
-#Are residuals uncorrelated?	
+#Ljung-Box test on residuals
 #p-value < 0.05 → Reject the null → Residuals are autocorrelated
 #p-value ≥ 0.05 → Do not reject null → Residuals not autocorrelated 
-
-# Function to perform the Jarque-Bera test on a model
-perform_jarque_bera <- function(model, model_name) {
-  jb_test <- jarque.bera.test(residuals(model))
-  cat("Model:", model_name, "\n")
-  print(jb_test)
-  cat("\n")
-}
-
 perform_ljungbox <- function(model, model_name) {
-# Estimate number of observations and parameters
-n <- nobs(model)
-param <- length(model$coefficients)
+  # Estimate number of observations and parameters
+  n <- nobs(model)
+  param <- length(model$coefficients)
   
-# Start with rule-based lag
-q <- floor(0.75 * n^(1/3))
+  # Start with rule-based lag
+  q <- floor(0.75 * n^(1/3))
+  # Ensure df > 0 and q >= param + 1
+  if (q <= param) {q <- param + 1}
+  # Set a minimum lag if needed (e.g., 5)
+  q <- max(q, 5)
+  df <- q - param
   
-# Ensure df > 0 and q >= param + 1
-if (q <= param) { q <- param + 1}
-# Set a minimum lag if needed (e.g., 5)
-q <- max(q, 5)  
-df <- q - param
-  
- lb_result <- LjungBox(model$residuals, lags = q, fitdf = param)
-cat("\nModel:", model_name, "\n")
-print(lb_result)
+  lb_result <- LjungBox(model$residuals, lags = q, fitdf = param)
+  cat("\nModel:", model_name, "\n")
+  print(lb_result)
   
 }
-
 perform_ljungbox(AR1, "AR(1)") # 0.0044 Significant autocorrelation remains
 perform_ljungbox(AR2, "AR(2)") # 0.0011 Significant autocorrelation remains
 perform_ljungbox(AR3, "AR(3)") # 0.00028 Strong residual autocorrelation
 perform_ljungbox(AR4, "AR(4)") # 0.2659 Residuals resemble white noise
 perform_ljungbox(AR5, "AR(5)") # 0.0975 Residuals likely white noise
 
-
+#The best performing model appears to be AR(4) Passes both the Ljung-Box and Jarque-Bera tests, as well as being
+# the best model according to AIC is AR(4)
