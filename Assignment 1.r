@@ -78,5 +78,14 @@ perform_ljungbox(AR3, "AR(3)") # 0.00028 Strong residual autocorrelation
 perform_ljungbox(AR4, "AR(4)") # 0.2659 Residuals resemble white noise
 perform_ljungbox(AR5, "AR(5)") # 0.0975 Residuals likely white noise
 
+
+jarque.bera.test(AR1$residuals) # 0.01385 Residuals not normally distributed
+jarque.bera.test(AR2$residuals) # 0.2152 Residuals appear normally distributed
+jarque.bera.test(AR3$residuals) # 0.1477 Residuals appear normally distributed
+jarque.bera.test(AR4$residuals) # 0.2747 Residuals appear normally distributed
+jarque.bera.test(AR5$residuals) # 0.2141 Residuals appear normally distributed
+
+
 #The best performing model appears to be AR(4) Passes both the Ljung-Box and Jarque-Bera tests, as well as being
 # the best model according to AIC is AR(4)
+
