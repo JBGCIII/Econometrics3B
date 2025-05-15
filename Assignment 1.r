@@ -1,8 +1,10 @@
 
 #I've Installed the required package using the console not the code
 # as instructed in Lab 1.R
-# Load required libraries
 
+
+#Problem 1
+#Part I
 # Load required libraries
 library(Ecdat)
 library(dynlm)      # To estimate AR(p) by OLS
@@ -38,6 +40,8 @@ summary(AR3)
 summary(AR4)
 summary(AR5)
 
+
+#Part II
 # Calculate and compare AIC values for each model
 AIC_values <- c(AIC(AR1), AIC(AR2), AIC(AR3), AIC(AR4), AIC(AR5))
 cat("AIC Values:\n")
@@ -47,3 +51,5 @@ print(AIC_values)
 best_model_index <- which.min(AIC_values)
 cat("The best model according to AIC is AR(", best_model_index, ")\n", sep = "")
 
+#Part III
+#Perform Ljung-Box and Jarque-Bera tests on the residuals of the mod-els.  What are the results?  Compare with the results from using AIC.Interpretthe results
